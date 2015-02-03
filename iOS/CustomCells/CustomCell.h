@@ -1,0 +1,4 @@
+
+@interface CustomCell : UITableViewCell
+
+@end
