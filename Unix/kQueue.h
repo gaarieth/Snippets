@@ -7,6 +7,10 @@ extern const kEvent NULL_K_EVENT;
 
 typedef std::vector<kEvent> kEventVector;
 
+int kFilterError(const kEvent&);
+
+int kSocketError(const kEvent&);
+
 class kQueue
 {
     NO_COPY(kQueue);

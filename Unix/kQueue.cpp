@@ -3,6 +3,16 @@
 
 const kEvent NULL_K_EVENT = {0};
 
+int kFilterError(const kEvent& e)
+{
+    return ((e.flags & EV_ERROR) ? int(e.data) : 0);
+}
+
+int kSocketError(const kEvent& e)
+{
+    return ((e.flags & EV_EOF) ? int(e.fflags) : kFilterError(e));
+}
+
 kQueue::kQueue(void)
     : m_queue(kqueue())
 {
