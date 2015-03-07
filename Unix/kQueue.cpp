@@ -10,7 +10,7 @@ int kFilterError(const kEvent& e)
 
 int kSocketError(const kEvent& e)
 {
-    return ((e.flags & EV_EOF) ? int(e.fflags) : kFilterError(e));
+    return ((e.flags & EV_EOF) ? int(e.fflags) : 0);
 }
 
 kQueue::kQueue(void)
