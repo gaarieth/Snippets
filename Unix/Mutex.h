@@ -8,7 +8,7 @@ class Mutex
     friend class Condition;
 
 public:
-    Mutex();
+    explicit Mutex(bool recursive = false);
 
     ~Mutex();
 

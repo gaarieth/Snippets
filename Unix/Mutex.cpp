@@ -1,12 +1,41 @@
 
 #include "Mutex.h"
 
-static const pthread_mutex_t NULL_MUTEX = {0};
+namespace
+{
+    const pthread_mutex_t NULL_MUTEX = {0};
 
-Mutex::Mutex()
+    const pthread_mutexattr_t NULL_ATTRIBUTES = {0};
+    
+    struct MutexAttributes
+    {
+        pthread_mutexattr_t Attributes;
+
+        MutexAttributes(bool recursive)
+            : Attributes(NULL_ATTRIBUTES)
+        {
+            pthread_mutexattr_init(&Attributes);
+
+            pthread_mutexattr_settype
+            (
+                &Attributes,
+                (recursive ? PTHREAD_MUTEX_RECURSIVE : PTHREAD_MUTEX_NORMAL)
+            );
+        }
+
+        ~MutexAttributes()
+        {
+            pthread_mutexattr_destroy(&Attributes);
+        }
+    };
+}
+
+Mutex::Mutex(bool recursive)
     : m_mutex(NULL_MUTEX)
 {
-    if (pthread_mutex_init(&m_mutex, 0))
+    MutexAttributes A(recursive);
+
+    if (pthread_mutex_init(&m_mutex, &A.Attributes))
         m_mutex = NULL_MUTEX;
 }
 
