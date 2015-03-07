@@ -49,6 +49,23 @@ TcpListener::TcpListener(unsigned short p)
         m_socket.CloseDescriptor();
 }
 
+int TcpListener::AcceptConnection()
+{
+    const int d = m_socket.GetDescriptor();
+
+    while (true)
+    {
+#ifdef __APPLE__
+        int i = accept(d, 0, 0);
+#else
+        int i = accept4(d, 0, 0, SOCK_NONBLOCK);
+#endif
+        if ((i == -1) && (errno == EINTR))
+            continue;
+        return i;
+    }
+}
+
 TcpClient::TcpClient(const char* ip, unsigned short p)
 {
     if (!m_socket.isValid())

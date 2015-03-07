@@ -23,6 +23,8 @@ protected:
 struct TcpListener : public TcpSocket
 {
     explicit TcpListener(unsigned short);
+
+    int AcceptConnection();
 };
 
 struct TcpClient : public TcpSocket
