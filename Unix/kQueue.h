@@ -47,18 +47,14 @@ public:
     void DisableEvent();
 
 protected:
-    void QueueEvent
-    (
-        uint16_t flags,
-        pvoid udata = 0,
-        intptr_t data = 0,
-        uint32_t fflags = 0
-    );
+    void QueueEvent(uint16_t flags, intptr_t data = 0, uint32_t fflags = 0);
 
 public:
     const uintptr_t Id;
 
     const int16_t Filter;
+
+    const pvoid UserData;
 
 private:
     kQueue& m_queue;
@@ -81,7 +77,7 @@ struct kTimerEvent : public kQueuedEvent
 
 struct kUserEvent : public kQueuedEvent
 {
-    kUserEvent(kQueue&, uintptr_t id);
+    kUserEvent(kQueue&, uintptr_t id, pvoid udata = 0);
 
-    void TriggerEvent(uint16_t flags = 0, pvoid udata = 0);
+    void TriggerEvent(uint32_t fflags);
 };

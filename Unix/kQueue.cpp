@@ -56,8 +56,9 @@ kQueuedEvent::kQueuedEvent
     : m_queue(queue)
     , Id(id)
     , Filter(filter)
+    , UserData(udata)
 {
-    QueueEvent(EV_ADD | EV_CLEAR, udata, data);
+    QueueEvent(EV_ADD | EV_CLEAR, data);
 }
 
 kQueuedEvent::~kQueuedEvent(void)
@@ -70,13 +71,7 @@ void kQueuedEvent::DisableEvent()
     QueueEvent(EV_DISABLE);
 }
 
-void kQueuedEvent::QueueEvent
-(
-    uint16_t flags,
-    pvoid udata,
-    intptr_t data,
-    uint32_t fflags
-)
+void kQueuedEvent::QueueEvent(uint16_t flags, intptr_t data, uint32_t fflags)
 {
     kEvent e =
     {
@@ -85,7 +80,7 @@ void kQueuedEvent::QueueEvent
         flags,
         fflags,
         data,
-        udata
+        UserData
     };
 
     m_queue.RegisterChange(e);
@@ -106,12 +101,12 @@ kTimerEvent::kTimerEvent(kQueue& queue, uintptr_t id, intptr_t data)
 {
 }
 
-kUserEvent::kUserEvent(kQueue& queue, uintptr_t id)
-    : kQueuedEvent(queue, id, EVFILT_USER)
+kUserEvent::kUserEvent(kQueue& queue, uintptr_t id, pvoid udata)
+    : kQueuedEvent(queue, id, EVFILT_USER, udata)
 {
 }
 
-void kUserEvent::TriggerEvent(uint16_t flags, pvoid udata)
+void kUserEvent::TriggerEvent(uint32_t fflags)
 {
-    QueueEvent(flags, udata, 0, NOTE_TRIGGER);
+    QueueEvent(0, 0, NOTE_FFOR | NOTE_TRIGGER | fflags);
 }
