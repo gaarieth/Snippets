@@ -15,7 +15,7 @@ StreamProtocol<T, R, S>::StreamProtocol(Stream& stream, T& t)
 }
 
 template<class T, int R, int S>
-bool StreamProtocol<T, R, S>::InsertPDU(pdu_t t, pbyte p, uint16 n)
+bool StreamProtocol<T, R, S>::EncodePDU(pdu_t t, pbyte p, uint16 n)
 {
     if (!(t && p && n))
         return false;
@@ -42,7 +42,7 @@ void StreamProtocol<T, R, S>::ExtractPDUs()
             {
                 readLength += n;
 
-                ExtractPDUs(readBuffer, readLength);
+                DecodePDUs(readBuffer, readLength);
             }
             else
                 break;
@@ -84,7 +84,7 @@ void StreamProtocol<T, R, S>::InsertPDUs()
 }
 
 template<class T, int R, int S>
-void StreamProtocol<T, R, S>::ExtractPDUs(byte* p, uint16& n)
+void StreamProtocol<T, R, S>::DecodePDUs(byte* p, uint16& n)
 {
     uint16 i = 0;
 

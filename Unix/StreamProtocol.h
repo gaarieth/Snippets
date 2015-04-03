@@ -20,7 +20,7 @@ public:
     StreamProtocol(Stream&, T&);
 
 public:
-    bool InsertPDU(pdu_t, pbyte, uint16);
+    bool EncodePDU(pdu_t, pbyte, uint16);
 
 public:
     void ExtractPDUs();
@@ -28,7 +28,7 @@ public:
     void InsertPDUs();
 
 private:
-    void ExtractPDUs(byte*, uint16&);
+    void DecodePDUs(byte*, uint16&);
 
 private:
     Stream& stream;
